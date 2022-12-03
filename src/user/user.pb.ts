@@ -4,6 +4,22 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "user";
 
+export interface FindOneUserLoginRequest {
+  login: string;
+}
+
+export interface FindOneUserEmailRequest {
+  email: string;
+}
+
+export interface FindOneUserPhoneRequest {
+  phone: string;
+}
+
+export interface FindOneUserInnRequest {
+  inn: string;
+}
+
 export interface User {
   id: string;
   email: string;
@@ -20,7 +36,7 @@ export interface User {
 export interface UserInfo {
   firstName: string;
   lastName: string;
-  birthData: string;
+  birthDate: string;
   description: string;
   locked: boolean;
   enabled: boolean;
@@ -87,21 +103,23 @@ export const USER_PACKAGE_NAME = "user";
 export interface UserServiceClient {
   create(request: CreateUserRequest): Observable<CreateUserResponse>;
 
-  createUr(request: CreateUserRequest): Observable<CreateUserResponse>;
-
   findAll(request: FindAllUsersRequest): Observable<FindAllUsersResponse>;
 
   findById(request: FindOneUserRequest): Observable<FindOneUserResponse>;
 
   createRole(request: CreateRoleRequest): Observable<CreateRoleResponse>;
+
+  findByLogin(request: FindOneUserLoginRequest): Observable<FindOneUserResponse>;
+
+  findByEmail(request: FindOneUserEmailRequest): Observable<FindOneUserResponse>;
+
+  findByPhone(request: FindOneUserPhoneRequest): Observable<FindOneUserResponse>;
+
+  findByInn(request: FindOneUserInnRequest): Observable<FindOneUserResponse>;
 }
 
 export interface UserServiceController {
   create(request: CreateUserRequest): Promise<CreateUserResponse> | Observable<CreateUserResponse> | CreateUserResponse;
-
-  createUr(
-    request: CreateUserRequest,
-  ): Promise<CreateUserResponse> | Observable<CreateUserResponse> | CreateUserResponse;
 
   findAll(
     request: FindAllUsersRequest,
@@ -114,11 +132,36 @@ export interface UserServiceController {
   createRole(
     request: CreateRoleRequest,
   ): Promise<CreateRoleResponse> | Observable<CreateRoleResponse> | CreateRoleResponse;
+
+  findByLogin(
+    request: FindOneUserLoginRequest,
+  ): Promise<FindOneUserResponse> | Observable<FindOneUserResponse> | FindOneUserResponse;
+
+  findByEmail(
+    request: FindOneUserEmailRequest,
+  ): Promise<FindOneUserResponse> | Observable<FindOneUserResponse> | FindOneUserResponse;
+
+  findByPhone(
+    request: FindOneUserPhoneRequest,
+  ): Promise<FindOneUserResponse> | Observable<FindOneUserResponse> | FindOneUserResponse;
+
+  findByInn(
+    request: FindOneUserInnRequest,
+  ): Promise<FindOneUserResponse> | Observable<FindOneUserResponse> | FindOneUserResponse;
 }
 
 export function UserServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["create", "createUr", "findAll", "findById", "createRole"];
+    const grpcMethods: string[] = [
+      "create",
+      "findAll",
+      "findById",
+      "createRole",
+      "findByLogin",
+      "findByEmail",
+      "findByPhone",
+      "findByInn",
+    ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("UserService", method)(constructor.prototype[method], method, descriptor);

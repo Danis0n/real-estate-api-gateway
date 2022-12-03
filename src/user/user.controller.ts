@@ -5,7 +5,6 @@ import {
   Inject,
   OnModuleInit,
   Param,
-  ParseUUIDPipe,
   Post,
 } from '@nestjs/common';
 import {
@@ -20,7 +19,6 @@ import {
 } from './user.pb';
 import { ClientGrpc } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
-import { ValidationPipe } from '../pipes/validation.pipe';
 
 @Controller('user')
 export class UserController implements OnModuleInit {
@@ -34,19 +32,11 @@ export class UserController implements OnModuleInit {
       this.userClient.getService<UserServiceClient>(USER_SERVICE_NAME);
   }
 
-  // @UsePipes(ValidationPipe)
   @Post('create')
   private async create(
     @Body() dto: CreateUserRequest,
   ): Promise<Observable<CreateUserResponse>> {
     return this.userServiceClient.create(dto);
-  }
-
-  @Post('create/ur')
-  private async createUr(
-    @Body() dto: CreateUserRequest,
-  ): Promise<Observable<CreateUserResponse>> {
-    return this.userServiceClient.createUr(dto);
   }
 
   @Get('get/all')
@@ -59,6 +49,34 @@ export class UserController implements OnModuleInit {
     @Param('id') id: string,
   ): Promise<Observable<FindOneUserResponse>> {
     return this.userServiceClient.findById({ id });
+  }
+
+  @Get('get/login/:id')
+  private async findByLogin(
+    @Param('id') login: string,
+  ): Promise<Observable<FindOneUserResponse>> {
+    return this.userServiceClient.findByLogin({ login });
+  }
+
+  @Get('get/email/:id')
+  private async findByEmail(
+    @Param('id') email: string,
+  ): Promise<Observable<FindOneUserResponse>> {
+    return this.userServiceClient.findByEmail({ email });
+  }
+
+  @Get('get/phone/:id')
+  private async findByPhone(
+    @Param('id') phone: string,
+  ): Promise<Observable<FindOneUserResponse>> {
+    return this.userServiceClient.findByPhone({ phone });
+  }
+
+  @Get('get/inn/:id')
+  private async findByInn(
+    @Param('id') inn: string,
+  ): Promise<Observable<FindOneUserResponse>> {
+    return this.userServiceClient.findByInn({ inn });
   }
 
   @Post('role/new')

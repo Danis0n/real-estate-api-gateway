@@ -20,7 +20,7 @@ export interface User {
 export interface UserInfo {
   firstName: string;
   lastName: string;
-  birthData: string;
+  birthDate: string;
   description: string;
   locked: boolean;
   enabled: boolean;
@@ -101,8 +101,6 @@ export const AUTH_PACKAGE_NAME = "auth";
 export interface AuthServiceClient {
   register(request: RegisterRequest): Observable<RegisterResponse>;
 
-  registerUr(request: RegisterRequest): Observable<RegisterResponse>;
-
   login(request: LoginRequest): Observable<LoginResponse>;
 
   auth(request: AuthRequest): Observable<AuthResponse>;
@@ -115,8 +113,6 @@ export interface AuthServiceClient {
 export interface AuthServiceController {
   register(request: RegisterRequest): Promise<RegisterResponse> | Observable<RegisterResponse> | RegisterResponse;
 
-  registerUr(request: RegisterRequest): Promise<RegisterResponse> | Observable<RegisterResponse> | RegisterResponse;
-
   login(request: LoginRequest): Promise<LoginResponse> | Observable<LoginResponse> | LoginResponse;
 
   auth(request: AuthRequest): Promise<AuthResponse> | Observable<AuthResponse> | AuthResponse;
@@ -128,7 +124,7 @@ export interface AuthServiceController {
 
 export function AuthServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["register", "registerUr", "login", "auth", "validate", "logout"];
+    const grpcMethods: string[] = ["register", "login", "auth", "validate", "logout"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("AuthService", method)(constructor.prototype[method], method, descriptor);
