@@ -5,10 +5,12 @@ import {
   Inject,
   OnModuleInit,
   Param,
+  ParseUUIDPipe,
   Post,
-  UsePipes,
 } from '@nestjs/common';
 import {
+  CreateRoleRequest,
+  CreateRoleResponse,
   CreateUserRequest,
   CreateUserResponse,
   FindAllUsersResponse,
@@ -40,6 +42,13 @@ export class UserController implements OnModuleInit {
     return this.userServiceClient.create(dto);
   }
 
+  @Post('create/ur')
+  private async createUr(
+    @Body() dto: CreateUserRequest,
+  ): Promise<Observable<CreateUserResponse>> {
+    return this.userServiceClient.createUr(dto);
+  }
+
   @Get('get/all')
   private async findAll(): Promise<Observable<FindAllUsersResponse>> {
     return this.userServiceClient.findAll({});
@@ -50,5 +59,12 @@ export class UserController implements OnModuleInit {
     @Param('id') id: string,
   ): Promise<Observable<FindOneUserResponse>> {
     return this.userServiceClient.findById({ id });
+  }
+
+  @Post('role/new')
+  private async createRole(
+    @Body() dto: CreateRoleRequest,
+  ): Promise<Observable<CreateRoleResponse>> {
+    return this.userServiceClient.createRole(dto);
   }
 }

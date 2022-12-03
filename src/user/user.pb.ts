@@ -11,7 +11,10 @@ export interface User {
   phone: string;
   userInfo: UserInfo | undefined;
   userLogin: UserLogin | undefined;
+  userUr: UserUrInfo | undefined;
   imageUrl: string;
+  date: string;
+  roles: Role[];
 }
 
 export interface UserInfo {
@@ -19,10 +22,32 @@ export interface UserInfo {
   lastName: string;
   birthData: string;
   description: string;
+  locked: boolean;
+  enabled: boolean;
+}
+
+export interface UserUrInfo {
+  inn: string;
+  description: string;
+  link: string;
+  address: string;
 }
 
 export interface UserLogin {
   login: string;
+}
+
+export interface Role {
+  name: string;
+}
+
+export interface CreateRoleRequest {
+  name: string;
+}
+
+export interface CreateRoleResponse {
+  status: string;
+  role: Role | undefined;
 }
 
 export interface FindOneUserRequest {
@@ -48,6 +73,8 @@ export interface CreateUserRequest {
   firstName: string;
   lastName: string;
   dateOfBirth: string;
+  link: string;
+  inn: string;
 }
 
 export interface CreateUserResponse {
@@ -60,13 +87,21 @@ export const USER_PACKAGE_NAME = "user";
 export interface UserServiceClient {
   create(request: CreateUserRequest): Observable<CreateUserResponse>;
 
+  createUr(request: CreateUserRequest): Observable<CreateUserResponse>;
+
   findAll(request: FindAllUsersRequest): Observable<FindAllUsersResponse>;
 
   findById(request: FindOneUserRequest): Observable<FindOneUserResponse>;
+
+  createRole(request: CreateRoleRequest): Observable<CreateRoleResponse>;
 }
 
 export interface UserServiceController {
   create(request: CreateUserRequest): Promise<CreateUserResponse> | Observable<CreateUserResponse> | CreateUserResponse;
+
+  createUr(
+    request: CreateUserRequest,
+  ): Promise<CreateUserResponse> | Observable<CreateUserResponse> | CreateUserResponse;
 
   findAll(
     request: FindAllUsersRequest,
@@ -75,11 +110,15 @@ export interface UserServiceController {
   findById(
     request: FindOneUserRequest,
   ): Promise<FindOneUserResponse> | Observable<FindOneUserResponse> | FindOneUserResponse;
+
+  createRole(
+    request: CreateRoleRequest,
+  ): Promise<CreateRoleResponse> | Observable<CreateRoleResponse> | CreateRoleResponse;
 }
 
 export function UserServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["create", "findAll", "findById"];
+    const grpcMethods: string[] = ["create", "createUr", "findAll", "findById", "createRole"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("UserService", method)(constructor.prototype[method], method, descriptor);
