@@ -4,6 +4,10 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "user";
 
+export interface GetHashedPasswordResponse {
+  password: string;
+}
+
 export interface FindOneUserLoginRequest {
   login: string;
 }
@@ -116,6 +120,8 @@ export interface UserServiceClient {
   findByPhone(request: FindOneUserPhoneRequest): Observable<FindOneUserResponse>;
 
   findByInn(request: FindOneUserInnRequest): Observable<FindOneUserResponse>;
+
+  getHashedPassword(request: FindOneUserLoginRequest): Observable<GetHashedPasswordResponse>;
 }
 
 export interface UserServiceController {
@@ -148,6 +154,10 @@ export interface UserServiceController {
   findByInn(
     request: FindOneUserInnRequest,
   ): Promise<FindOneUserResponse> | Observable<FindOneUserResponse> | FindOneUserResponse;
+
+  getHashedPassword(
+    request: FindOneUserLoginRequest,
+  ): Promise<GetHashedPasswordResponse> | Observable<GetHashedPasswordResponse> | GetHashedPasswordResponse;
 }
 
 export function UserServiceControllerMethods() {
@@ -161,6 +171,7 @@ export function UserServiceControllerMethods() {
       "findByEmail",
       "findByPhone",
       "findByInn",
+      "getHashedPassword",
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);

@@ -21,7 +21,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "proto:install": "npm i git+https://github.com/Danis0n/real-estate-proto.git",
     "proto:user": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto.cmd -I=./node_modules/proto-config/proto --ts_proto_out=src/user/ node_modules/proto-config/proto/user.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
-    "proto:auth": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto.cmd -I=./node_modules/proto-config/proto --ts_proto_out=src/auth/ node_modules/proto-config/proto/auth.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb"
+    "proto:auth": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto.cmd -I=./node_modules/proto-config/proto --ts_proto_out=src/auth/ node_modules/proto-config/proto/auth.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
+    "proto:all": "npm run proto:auth && npm run proto:user"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.7.3",

@@ -14,6 +14,7 @@ import {
   CreateUserResponse,
   FindAllUsersResponse,
   FindOneUserResponse,
+  GetHashedPasswordResponse,
   USER_SERVICE_NAME,
   UserServiceClient,
 } from './user.pb';
@@ -78,6 +79,13 @@ export class UserController implements OnModuleInit {
   ): Promise<Observable<FindOneUserResponse>> {
     return this.userServiceClient.findByInn({ inn });
   }
+
+  // @Get('get/hash/:login')
+  // private async getHashedPassword(
+  //   @Param('login') login: string,
+  // ): Promise<Observable<GetHashedPasswordResponse>> {
+  //   return this.userServiceClient.getHashedPassword({ login: login });
+  // }
 
   @Post('role/new')
   private async createRole(

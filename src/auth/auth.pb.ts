@@ -42,6 +42,7 @@ export interface Role {
 }
 
 export interface LogoutRequest {
+  accessToken: string;
 }
 
 export interface LogoutResponse {
@@ -49,12 +50,14 @@ export interface LogoutResponse {
 }
 
 export interface AuthRequest {
+  refreshToken: string;
 }
 
 export interface AuthResponse {
   accessToken: string;
   refreshToken: string;
   user: User | undefined;
+  error: string;
 }
 
 export interface RegisterRequest {
@@ -83,6 +86,7 @@ export interface LoginResponse {
   accessToken: string;
   refreshToken: string;
   user: User | undefined;
+  error: string[];
 }
 
 export interface ValidateRequest {
@@ -92,8 +96,6 @@ export interface ValidateRequest {
 export interface ValidateResponse {
   status: number;
   error: string[];
-  userId: number;
-  roles: string[];
 }
 
 export const AUTH_PACKAGE_NAME = "auth";

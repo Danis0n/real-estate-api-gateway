@@ -2,12 +2,12 @@ import {
   Injectable,
   CanActivate,
   ExecutionContext,
-  HttpStatus,
   UnauthorizedException,
   Inject,
+  HttpStatus,
 } from '@nestjs/common';
-import { ValidateResponse } from './auth.pb';
-import { AuthService } from './auth.service';
+import { AuthService } from '../auth.service';
+import { ValidateResponse } from '../auth.pb';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -23,18 +23,13 @@ export class AuthGuard implements CanActivate {
     }
 
     const bearer: string[] = authorization.split(' ');
-
     if (!bearer || bearer.length < 2) {
       throw new UnauthorizedException();
     }
-
     const token: string = bearer[1];
-
-    const { status, userId }: ValidateResponse =
-      await this.authService.validate(token);
-
-    req.user = userId;
-
+    const { status, error }: ValidateResponse = await this.authService.validate(
+      token,
+    );
     if (status !== HttpStatus.OK) {
       throw new UnauthorizedException({
         message: 'Пользователь не авторизован',
