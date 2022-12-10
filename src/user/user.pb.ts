@@ -4,6 +4,20 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "user";
 
+export interface UploadImageRequest {
+  buffer: Uint8Array;
+  fieldName: string;
+  originalName: string;
+  mimetype: string;
+  size: number;
+}
+
+export interface UploadImageResponse {
+  status: string;
+  error: string;
+  uuid: string;
+}
+
 export interface GetHashedPasswordResponse {
   password: string;
 }
@@ -122,6 +136,8 @@ export interface UserServiceClient {
   findByInn(request: FindOneUserInnRequest): Observable<FindOneUserResponse>;
 
   getHashedPassword(request: FindOneUserLoginRequest): Observable<GetHashedPasswordResponse>;
+
+  uploadImageToUser(request: UploadImageRequest): Observable<UploadImageResponse>;
 }
 
 export interface UserServiceController {
@@ -158,6 +174,10 @@ export interface UserServiceController {
   getHashedPassword(
     request: FindOneUserLoginRequest,
   ): Promise<GetHashedPasswordResponse> | Observable<GetHashedPasswordResponse> | GetHashedPasswordResponse;
+
+  uploadImageToUser(
+    request: UploadImageRequest,
+  ): Promise<UploadImageResponse> | Observable<UploadImageResponse> | UploadImageResponse;
 }
 
 export function UserServiceControllerMethods() {
@@ -172,6 +192,7 @@ export function UserServiceControllerMethods() {
       "findByPhone",
       "findByInn",
       "getHashedPassword",
+      "uploadImageToUser",
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);

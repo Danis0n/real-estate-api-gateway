@@ -6,6 +6,8 @@ import {
   OnModuleInit,
   Param,
   Post,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import {
   CreateRoleRequest,
@@ -14,12 +16,13 @@ import {
   CreateUserResponse,
   FindAllUsersResponse,
   FindOneUserResponse,
-  GetHashedPasswordResponse,
+  UploadImageResponse,
   USER_SERVICE_NAME,
   UserServiceClient,
 } from './user.pb';
 import { ClientGrpc } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('user')
 export class UserController implements OnModuleInit {
@@ -80,17 +83,24 @@ export class UserController implements OnModuleInit {
     return this.userServiceClient.findByInn({ inn });
   }
 
-  // @Get('get/hash/:login')
-  // private async getHashedPassword(
-  //   @Param('login') login: string,
-  // ): Promise<Observable<GetHashedPasswordResponse>> {
-  //   return this.userServiceClient.getHashedPassword({ login: login });
-  // }
-
   @Post('role/new')
   private async createRole(
     @Body() dto: CreateRoleRequest,
   ): Promise<Observable<CreateRoleResponse>> {
     return this.userServiceClient.createRole(dto);
+  }
+
+  @Post('image/upload')
+  @UseInterceptors(FileInterceptor('file'))
+  private async uploadImage(
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<Observable<UploadImageResponse>> {
+    return this.userServiceClient.uploadImageToUser({
+      buffer: file.buffer,
+      fieldName: file.fieldname,
+      originalName: file.originalname,
+      mimetype: file.mimetype,
+      size: file.size,
+    });
   }
 }
