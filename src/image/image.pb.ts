@@ -4,6 +4,15 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "image";
 
+export interface ImageDeleteRequest {
+  uuid: string;
+}
+
+export interface ImageDeleteResponse {
+  status: string;
+  error: string;
+}
+
 export interface ImageUserRequest {
   buffer: Uint8Array;
   fieldName: string;
@@ -37,7 +46,7 @@ export interface ImageViewRequest {
 }
 
 export interface ImageViewResponse {
-  buffer: Uint8Array;
+  buffer: string;
 }
 
 export const IMAGE_PACKAGE_NAME = "image";
@@ -48,6 +57,8 @@ export interface ImageServiceClient {
   imageUploadPost(request: ImagePostRequest): Observable<ImagePostResponse>;
 
   imageView(request: ImageViewRequest): Observable<ImageViewResponse>;
+
+  imageDelete(request: ImageDeleteRequest): Observable<ImageDeleteResponse>;
 }
 
 export interface ImageServiceController {
@@ -60,11 +71,15 @@ export interface ImageServiceController {
   ): Promise<ImagePostResponse> | Observable<ImagePostResponse> | ImagePostResponse;
 
   imageView(request: ImageViewRequest): Promise<ImageViewResponse> | Observable<ImageViewResponse> | ImageViewResponse;
+
+  imageDelete(
+    request: ImageDeleteRequest,
+  ): Promise<ImageDeleteResponse> | Observable<ImageDeleteResponse> | ImageDeleteResponse;
 }
 
 export function ImageServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["imageUploadUser", "imageUploadPost", "imageView"];
+    const grpcMethods: string[] = ["imageUploadUser", "imageUploadPost", "imageView", "imageDelete"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("ImageService", method)(constructor.prototype[method], method, descriptor);

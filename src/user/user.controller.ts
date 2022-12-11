@@ -6,7 +6,9 @@ import {
   OnModuleInit,
   Param,
   Post,
+  Req,
   UploadedFile,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import {
@@ -23,6 +25,8 @@ import {
 import { ClientGrpc } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { AuthGuard } from '../auth/guard/auth.guard';
+import { Request } from 'express';
 
 @Controller('user')
 export class UserController implements OnModuleInit {
@@ -43,8 +47,12 @@ export class UserController implements OnModuleInit {
     return this.userServiceClient.create(dto);
   }
 
+  @UseGuards(AuthGuard)
   @Get('get/all')
-  private async findAll(): Promise<Observable<FindAllUsersResponse>> {
+  private async findAll(
+    @Req() request: Request,
+  ): Promise<Observable<FindAllUsersResponse>> {
+    console.log(request);
     return this.userServiceClient.findAll({});
   }
 
@@ -90,10 +98,12 @@ export class UserController implements OnModuleInit {
     return this.userServiceClient.createRole(dto);
   }
 
-  @Post('image/upload')
+  @UseGuards(AuthGuard)
+  @Post('image/upload/:id')
   @UseInterceptors(FileInterceptor('file'))
   private async uploadImage(
     @UploadedFile() file: Express.Multer.File,
+    @Param('id') uuid: string,
   ): Promise<Observable<UploadImageResponse>> {
     return this.userServiceClient.uploadImageToUser({
       buffer: file.buffer,
@@ -101,6 +111,7 @@ export class UserController implements OnModuleInit {
       originalName: file.originalname,
       mimetype: file.mimetype,
       size: file.size,
+      uuid: uuid,
     });
   }
 }

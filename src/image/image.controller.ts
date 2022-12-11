@@ -1,7 +1,9 @@
 import {
   Controller,
+  Get,
   Inject,
   OnModuleInit,
+  Param,
   Post,
   UploadedFile,
   UseInterceptors,
@@ -11,8 +13,10 @@ import { Observable } from 'rxjs';
 import { ClientGrpc } from '@nestjs/microservices';
 import {
   IMAGE_SERVICE_NAME,
+  ImageDeleteResponse,
   ImageServiceClient,
   ImageUserResponse,
+  ImageViewResponse,
 } from './image.pb';
 
 @Controller('image')
@@ -40,5 +44,19 @@ export class ImageController implements OnModuleInit {
       mimetype: file.mimetype,
       size: file.size,
     });
+  }
+
+  @Get('display/:id')
+  private async displayImage(
+    @Param('id') uuid: string,
+  ): Promise<Observable<ImageViewResponse>> {
+    return this.imageServiceClient.imageView({ uuid });
+  }
+
+  @Post('delete/:id')
+  private async deleteImage(
+    @Param('id') uuid: string,
+  ): Promise<Observable<ImageDeleteResponse>> {
+    return this.imageServiceClient.imageDelete({ uuid });
   }
 }

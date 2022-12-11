@@ -10,6 +10,7 @@ export interface UploadImageRequest {
   originalName: string;
   mimetype: string;
   size: number;
+  uuid: string;
 }
 
 export interface UploadImageResponse {

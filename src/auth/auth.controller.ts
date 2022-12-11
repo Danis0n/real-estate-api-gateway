@@ -5,6 +5,8 @@ import {
   OnModuleInit,
   Post,
   UseGuards,
+  UseInterceptors,
+  Req,
 } from '@nestjs/common';
 import {
   AUTH_SERVICE_NAME,
@@ -18,9 +20,11 @@ import {
 } from './auth.pb';
 import { ClientGrpc } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
-import { GetCurrentUserId } from '../decorators/get-current-user-id.decorator';
+import { GetCurrentUserAt } from '../decorators/get-current-user-id.decorator';
 import { AuthGuard } from './guard/auth.guard';
 import { GetCurrentUser } from '../decorators/get-current-user.decorator';
+import { AuthInterceptor } from '../interceptors/auth.interceptor';
+import { Request } from 'express';
 
 @Controller('auth')
 export class AuthController implements OnModuleInit {
@@ -41,6 +45,7 @@ export class AuthController implements OnModuleInit {
     return this.authServiceClient.register(body);
   }
 
+  @UseInterceptors(AuthInterceptor)
   @Post('login')
   private async login(
     @Body() body: LoginRequest,
@@ -48,17 +53,20 @@ export class AuthController implements OnModuleInit {
     return this.authServiceClient.login(body);
   }
 
+  @UseInterceptors(AuthInterceptor)
   @Post('refresh')
   private async auth(
-    @GetCurrentUser('refreshToken') refreshToken: string,
+    @Req() request: Request,
   ): Promise<Observable<AuthResponse>> {
+    const refreshToken = request.cookies['refreshToken'];
+    console.log(refreshToken);
     return this.authServiceClient.auth({ refreshToken: refreshToken });
   }
 
   @UseGuards(AuthGuard)
   @Post('logout')
   private async logout(
-    @GetCurrentUserId() at: string,
+    @GetCurrentUserAt() at: string,
   ): Promise<Observable<LogoutResponse>> {
     return this.authServiceClient.logout({ accessToken: at });
   }
