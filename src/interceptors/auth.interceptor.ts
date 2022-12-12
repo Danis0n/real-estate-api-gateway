@@ -13,7 +13,6 @@ export class AuthInterceptor implements NestInterceptor {
     const res: Response = context.switchToHttp().getResponse();
     return next.handle().pipe(
       map((data) => {
-        console.log(data);
         res.cookie('refreshToken', data.refreshToken, {
           maxAge: 60 * 60 * 1000 * 24 * 60,
         });

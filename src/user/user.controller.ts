@@ -16,6 +16,7 @@ import {
   CreateRoleResponse,
   CreateUserRequest,
   CreateUserResponse,
+  DeleteImageResponse,
   FindAllUsersResponse,
   FindOneUserResponse,
   UploadImageResponse,
@@ -113,5 +114,13 @@ export class UserController implements OnModuleInit {
       size: file.size,
       uuid: uuid,
     });
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('image/delete/:id')
+  private async deleteImage(
+    @Param('id') uuid: string,
+  ): Promise<Observable<DeleteImageResponse>> {
+    return this.userServiceClient.deleteImageFromUser({ uuid });
   }
 }

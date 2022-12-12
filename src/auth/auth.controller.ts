@@ -59,7 +59,6 @@ export class AuthController implements OnModuleInit {
     @Req() request: Request,
   ): Promise<Observable<AuthResponse>> {
     const refreshToken = request.cookies['refreshToken'];
-    console.log(refreshToken);
     return this.authServiceClient.auth({ refreshToken: refreshToken });
   }
 
