@@ -26,7 +26,7 @@ import {
 import { ClientGrpc } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { AuthGuard } from '../auth/guard/auth.guard';
+import { AuthGuard } from '../utils/guard/auth.guard';
 import { Request } from 'express';
 
 @Controller('user')

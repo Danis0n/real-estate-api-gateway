@@ -20,10 +20,9 @@ import {
 } from './auth.pb';
 import { ClientGrpc } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
-import { GetCurrentUserAt } from '../decorators/get-current-user-id.decorator';
-import { AuthGuard } from './guard/auth.guard';
-import { GetCurrentUser } from '../decorators/get-current-user.decorator';
-import { AuthInterceptor } from '../interceptors/auth.interceptor';
+import { GetCurrentUserAt } from '../utils/decorators/get-current-user-id.decorator';
+import { AuthGuard } from '../utils/guard/auth.guard';
+import { AuthInterceptor } from '../utils/interceptors/auth.interceptor';
 import { Request } from 'express';
 
 @Controller('auth')

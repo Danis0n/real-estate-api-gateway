@@ -27,18 +27,24 @@ export interface ImageUserResponse {
   uuid: string;
 }
 
-export interface ImagePostRequest {
-  buffer: Uint8Array;
+export interface ImageCreate {
   fieldName: string;
   originalName: string;
   mimetype: string;
+  buffer: Uint8Array;
   size: number;
+}
+
+export interface ImagePostRequest {
+  images: ImageCreate[];
+  uuid: string;
 }
 
 export interface ImagePostResponse {
   status: string;
   error: string;
   uuid: string;
+  imagesUuids: string[];
 }
 
 export interface ImageViewRequest {
