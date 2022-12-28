@@ -12,6 +12,10 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import {
+  ChangeCompanyInfoRequest,
+  ChangeCompanyInfoResponse,
+  ChangeInfoRequest,
+  ChangeInfoResponse,
   CreateRoleRequest,
   CreateRoleResponse,
   CreateUserRequest,
@@ -64,34 +68,6 @@ export class UserController implements OnModuleInit {
     return this.userServiceClient.findById({ id });
   }
 
-  @Get('get/login/:id')
-  private async findByLogin(
-    @Param('id') login: string,
-  ): Promise<Observable<FindOneUserResponse>> {
-    return this.userServiceClient.findByLogin({ login });
-  }
-
-  @Get('get/email/:id')
-  private async findByEmail(
-    @Param('id') email: string,
-  ): Promise<Observable<FindOneUserResponse>> {
-    return this.userServiceClient.findByEmail({ email });
-  }
-
-  @Get('get/phone/:id')
-  private async findByPhone(
-    @Param('id') phone: string,
-  ): Promise<Observable<FindOneUserResponse>> {
-    return this.userServiceClient.findByPhone({ phone });
-  }
-
-  @Get('get/inn/:id')
-  private async findByInn(
-    @Param('id') inn: string,
-  ): Promise<Observable<FindOneUserResponse>> {
-    return this.userServiceClient.findByInn({ inn });
-  }
-
   @Post('role/new')
   private async createRole(
     @Body() dto: CreateRoleRequest,
@@ -107,10 +83,10 @@ export class UserController implements OnModuleInit {
     @Param('id') uuid: string,
   ): Promise<Observable<UploadImageResponse>> {
     return this.userServiceClient.uploadImageToUser({
-      buffer: file.buffer,
-      fieldName: file.fieldname,
       originalName: file.originalname,
+      fieldName: file.fieldname,
       mimetype: file.mimetype,
+      buffer: file.buffer,
       size: file.size,
       uuid: uuid,
     });
@@ -122,5 +98,21 @@ export class UserController implements OnModuleInit {
     @Param('id') uuid: string,
   ): Promise<Observable<DeleteImageResponse>> {
     return this.userServiceClient.deleteImageFromUser({ uuid });
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('change/info')
+  private async changeInfo(
+    @Body() dto: ChangeInfoRequest,
+  ): Promise<Observable<ChangeInfoResponse>> {
+    return this.userServiceClient.changeInfo(dto);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('change/company-info/')
+  private async changeCompanyInfo(
+    @Body() dto: ChangeCompanyInfoRequest,
+  ): Promise<Observable<ChangeCompanyInfoResponse>> {
+    return this.userServiceClient.changeCompanyInfo(dto);
   }
 }

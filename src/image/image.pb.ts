@@ -9,7 +9,7 @@ export interface ImageDeleteRequest {
 }
 
 export interface ImageDeleteResponse {
-  status: string;
+  status: number;
   error: string;
 }
 
@@ -22,7 +22,7 @@ export interface ImageUserRequest {
 }
 
 export interface ImageUserResponse {
-  status: string;
+  status: number;
   error: string;
   uuid: string;
 }
@@ -41,7 +41,7 @@ export interface ImagePostRequest {
 }
 
 export interface ImagePostResponse {
-  status: string;
+  status: number;
   error: string;
   uuid: string;
   imagesUuids: string[];

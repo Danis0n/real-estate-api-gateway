@@ -39,7 +39,7 @@ export class PostController implements OnModuleInit {
       this.postClient.getService<PostServiceClient>(POST_SERVICE_NAME);
   }
 
-  // @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard)
   @Post('create')
   @UseInterceptors(FilesInterceptor('files'))
   private async create(

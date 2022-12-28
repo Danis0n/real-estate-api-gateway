@@ -37,7 +37,7 @@ export interface CreatePostRequest {
 }
 
 export interface CreatePostResponse {
-  status: string;
+  status: number;
   error: string;
   post: Post | undefined;
 }
@@ -54,7 +54,7 @@ export interface FindOnePostRequest {
 }
 
 export interface FindOnePostResponse {
-  status: string;
+  status: number;
   error: string;
   post: Post | undefined;
 }

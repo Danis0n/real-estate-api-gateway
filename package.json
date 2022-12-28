@@ -24,7 +24,8 @@
     "proto:auth": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto.cmd -I=./node_modules/proto-config/proto --ts_proto_out=src/auth/ node_modules/proto-config/proto/auth.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
     "proto:image": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto.cmd -I=./node_modules/proto-config/proto --ts_proto_out=src/image/ node_modules/proto-config/proto/image.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
     "proto:post": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto.cmd -I=./node_modules/proto-config/proto --ts_proto_out=src/post/ node_modules/proto-config/proto/post.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
-    "proto:all": "npm run proto:auth && npm run proto:user && npm run proto:image && npm run proto:post"
+    "proto:email": "protoc --plugin=node_modules/.bin/protoc-gen-ts_proto.cmd -I=./node_modules/proto-config/proto --ts_proto_out=src/email/ node_modules/proto-config/proto/email.proto --ts_proto_opt=nestJs=true --ts_proto_opt=fileSuffix=.pb",
+    "proto:all": "npm run proto:auth && npm run proto:user && npm run proto:image && npm run proto:post && npm run proto:email"
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.7.3",

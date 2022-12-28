@@ -4,12 +4,65 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "user";
 
+export interface CheckUserRequest {
+  login: string;
+  phone: string;
+  email: string;
+}
+
+export interface CheckUserResponse {
+  status: number;
+  error: string;
+}
+
+export interface ChangeCompanyInfoRequest {
+  description: string;
+  link: string;
+  address: string;
+}
+
+export interface ChangeCompanyInfoResponse {
+  status: number;
+  error: string;
+}
+
+export interface ChangeInfoRequest {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email: string;
+}
+
+export interface ChangeInfoResponse {
+  status: number;
+  error: string;
+}
+
+export interface ConfirmAccountRequest {
+  uuid: string;
+}
+
+export interface ConfirmAccountResponse {
+  status: number;
+  error: string;
+}
+
+export interface ChangePasswordRequest {
+  password: string;
+  uuid: string;
+}
+
+export interface ChangePasswordResponse {
+  status: number;
+  error: string;
+}
+
 export interface DeleteImageRequest {
   uuid: string;
 }
 
 export interface DeleteImageResponse {
-  status: string;
+  status: number;
   error: string;
 }
 
@@ -23,7 +76,7 @@ export interface UploadImageRequest {
 }
 
 export interface UploadImageResponse {
-  status: string;
+  status: number;
   error: string;
   uuid: string;
 }
@@ -34,18 +87,6 @@ export interface GetHashedPasswordResponse {
 
 export interface FindOneUserLoginRequest {
   login: string;
-}
-
-export interface FindOneUserEmailRequest {
-  email: string;
-}
-
-export interface FindOneUserPhoneRequest {
-  phone: string;
-}
-
-export interface FindOneUserInnRequest {
-  inn: string;
 }
 
 export interface User {
@@ -90,7 +131,7 @@ export interface CreateRoleRequest {
 }
 
 export interface CreateRoleResponse {
-  status: string;
+  status: number;
   role: Role | undefined;
 }
 
@@ -122,7 +163,7 @@ export interface CreateUserRequest {
 }
 
 export interface CreateUserResponse {
-  status: string;
+  status: number;
   user: User | undefined;
 }
 
@@ -139,17 +180,21 @@ export interface UserServiceClient {
 
   findByLogin(request: FindOneUserLoginRequest): Observable<FindOneUserResponse>;
 
-  findByEmail(request: FindOneUserEmailRequest): Observable<FindOneUserResponse>;
-
-  findByPhone(request: FindOneUserPhoneRequest): Observable<FindOneUserResponse>;
-
-  findByInn(request: FindOneUserInnRequest): Observable<FindOneUserResponse>;
-
   getHashedPassword(request: FindOneUserLoginRequest): Observable<GetHashedPasswordResponse>;
 
   uploadImageToUser(request: UploadImageRequest): Observable<UploadImageResponse>;
 
   deleteImageFromUser(request: DeleteImageRequest): Observable<DeleteImageResponse>;
+
+  changePassword(request: ChangePasswordRequest): Observable<ChangePasswordResponse>;
+
+  confirmAccount(request: ConfirmAccountRequest): Observable<ConfirmAccountResponse>;
+
+  changeInfo(request: ChangeInfoRequest): Observable<ChangeInfoResponse>;
+
+  changeCompanyInfo(request: ChangeCompanyInfoRequest): Observable<ChangeCompanyInfoResponse>;
+
+  checkUser(request: CheckUserRequest): Observable<CheckUserResponse>;
 }
 
 export interface UserServiceController {
@@ -171,18 +216,6 @@ export interface UserServiceController {
     request: FindOneUserLoginRequest,
   ): Promise<FindOneUserResponse> | Observable<FindOneUserResponse> | FindOneUserResponse;
 
-  findByEmail(
-    request: FindOneUserEmailRequest,
-  ): Promise<FindOneUserResponse> | Observable<FindOneUserResponse> | FindOneUserResponse;
-
-  findByPhone(
-    request: FindOneUserPhoneRequest,
-  ): Promise<FindOneUserResponse> | Observable<FindOneUserResponse> | FindOneUserResponse;
-
-  findByInn(
-    request: FindOneUserInnRequest,
-  ): Promise<FindOneUserResponse> | Observable<FindOneUserResponse> | FindOneUserResponse;
-
   getHashedPassword(
     request: FindOneUserLoginRequest,
   ): Promise<GetHashedPasswordResponse> | Observable<GetHashedPasswordResponse> | GetHashedPasswordResponse;
@@ -194,6 +227,24 @@ export interface UserServiceController {
   deleteImageFromUser(
     request: DeleteImageRequest,
   ): Promise<DeleteImageResponse> | Observable<DeleteImageResponse> | DeleteImageResponse;
+
+  changePassword(
+    request: ChangePasswordRequest,
+  ): Promise<ChangePasswordResponse> | Observable<ChangePasswordResponse> | ChangePasswordResponse;
+
+  confirmAccount(
+    request: ConfirmAccountRequest,
+  ): Promise<ConfirmAccountResponse> | Observable<ConfirmAccountResponse> | ConfirmAccountResponse;
+
+  changeInfo(
+    request: ChangeInfoRequest,
+  ): Promise<ChangeInfoResponse> | Observable<ChangeInfoResponse> | ChangeInfoResponse;
+
+  changeCompanyInfo(
+    request: ChangeCompanyInfoRequest,
+  ): Promise<ChangeCompanyInfoResponse> | Observable<ChangeCompanyInfoResponse> | ChangeCompanyInfoResponse;
+
+  checkUser(request: CheckUserRequest): Promise<CheckUserResponse> | Observable<CheckUserResponse> | CheckUserResponse;
 }
 
 export function UserServiceControllerMethods() {
@@ -204,12 +255,14 @@ export function UserServiceControllerMethods() {
       "findById",
       "createRole",
       "findByLogin",
-      "findByEmail",
-      "findByPhone",
-      "findByInn",
       "getHashedPassword",
       "uploadImageToUser",
       "deleteImageFromUser",
+      "changePassword",
+      "confirmAccount",
+      "changeInfo",
+      "changeCompanyInfo",
+      "checkUser",
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
