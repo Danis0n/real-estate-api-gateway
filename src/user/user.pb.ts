@@ -19,6 +19,7 @@ export interface ChangeCompanyInfoRequest {
   description: string;
   link: string;
   address: string;
+  uuid: string;
 }
 
 export interface ChangeCompanyInfoResponse {
@@ -31,6 +32,7 @@ export interface ChangeInfoRequest {
   lastName: string;
   phone: string;
   email: string;
+  uuid: string;
 }
 
 export interface ChangeInfoResponse {

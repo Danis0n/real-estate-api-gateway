@@ -1,6 +1,7 @@
 import {
   CallHandler,
   ExecutionContext,
+  HttpStatus,
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
@@ -14,7 +15,7 @@ export class ConfirmInterceptor implements NestInterceptor {
     const res: Response = context.switchToHttp().getResponse();
     return next.handle().pipe(
       map((data: RedirectResponse) => {
-        if (data.status == '200') res.redirect('test');
+        if (data.status == HttpStatus.OK) res.redirect('test');
         else {
           res.redirect('google.com');
         }

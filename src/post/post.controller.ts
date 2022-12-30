@@ -57,7 +57,7 @@ export class PostController implements OnModuleInit {
     return this.postServiceClient.findOne({ uuid: id });
   }
 
-  @Get('get/all')
+  @Get('get-all')
   private async findAll(): Promise<Observable<FindAllPostResponse>> {
     return this.postServiceClient.findAll({});
   }
