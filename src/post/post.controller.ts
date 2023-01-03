@@ -17,6 +17,10 @@ import {
   FindOnePostResponse,
   POST_SERVICE_NAME,
   PostServiceClient,
+  UpdateImagesRequest,
+  UpdateImagesResponse,
+  UpdatePostRequest,
+  UpdatePostResponse,
 } from './post.pb';
 import { ClientGrpc } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
@@ -60,5 +64,22 @@ export class PostController implements OnModuleInit {
   @Get('get-all')
   private async findAll(): Promise<Observable<FindAllPostResponse>> {
     return this.postServiceClient.findAll({});
+  }
+
+  @Post('update')
+  private async update(
+    @Body() dto: UpdatePostRequest,
+  ): Promise<Observable<UpdatePostResponse>> {
+    return this.postServiceClient.updatePost(dto);
+  }
+
+  @Post('update/images')
+  @UseInterceptors(FilesInterceptor('files'))
+  private async updateImages(
+    @UploadedFiles() files: Array<Express.Multer.File>,
+    @Body() dto: UpdateImagesRequest,
+  ): Promise<Observable<UpdateImagesResponse>> {
+    dto.createImages = this.imageMapper.mapToArrayImageCreate(files);
+    return this.postServiceClient.updateImages(dto);
   }
 }

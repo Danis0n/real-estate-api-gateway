@@ -30,7 +30,10 @@ import { ClientGrpc } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
 import { GetCurrentUserAt } from '../utils/decorators/get-current-user-id.decorator';
 import { AuthGuard } from '../utils/guard/auth.guard';
-import { AuthInterceptor } from '../utils/interceptors/auth.interceptor';
+import {
+  AuthInterceptor,
+  LogoutInterceptor,
+} from '../utils/interceptors/auth.interceptor';
 import { Request } from 'express';
 import { RedirectInterceptor } from '../utils/interceptors/redirect.interceptor.service';
 
@@ -70,6 +73,7 @@ export class AuthController implements OnModuleInit {
     return this.authServiceClient.auth({ refreshToken: refreshToken });
   }
 
+  @UseInterceptors(LogoutInterceptor)
   @UseGuards(AuthGuard)
   @Post('logout')
   private async logout(

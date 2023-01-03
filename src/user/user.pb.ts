@@ -15,19 +15,19 @@ export interface CheckUserResponse {
   error: string;
 }
 
-export interface ChangeCompanyInfoRequest {
+export interface UpdateCompanyInfoRequest {
   description: string;
   link: string;
   address: string;
   uuid: string;
 }
 
-export interface ChangeCompanyInfoResponse {
+export interface UpdateCompanyInfoResponse {
   status: number;
   error: string;
 }
 
-export interface ChangeInfoRequest {
+export interface UpdateInfoRequest {
   firstName: string;
   lastName: string;
   phone: string;
@@ -35,7 +35,7 @@ export interface ChangeInfoRequest {
   uuid: string;
 }
 
-export interface ChangeInfoResponse {
+export interface UpdateInfoResponse {
   status: number;
   error: string;
 }
@@ -49,12 +49,12 @@ export interface ConfirmAccountResponse {
   error: string;
 }
 
-export interface ChangePasswordRequest {
+export interface UpdatePasswordRequest {
   password: string;
   uuid: string;
 }
 
-export interface ChangePasswordResponse {
+export interface UpdatePasswordResponse {
   status: number;
   error: string;
 }
@@ -162,6 +162,7 @@ export interface CreateUserRequest {
   dateOfBirth: string;
   link: string;
   inn: string;
+  role: string;
 }
 
 export interface CreateUserResponse {
@@ -188,13 +189,13 @@ export interface UserServiceClient {
 
   deleteImageFromUser(request: DeleteImageRequest): Observable<DeleteImageResponse>;
 
-  changePassword(request: ChangePasswordRequest): Observable<ChangePasswordResponse>;
-
   confirmAccount(request: ConfirmAccountRequest): Observable<ConfirmAccountResponse>;
 
-  changeInfo(request: ChangeInfoRequest): Observable<ChangeInfoResponse>;
+  updatePassword(request: UpdatePasswordRequest): Observable<UpdatePasswordResponse>;
 
-  changeCompanyInfo(request: ChangeCompanyInfoRequest): Observable<ChangeCompanyInfoResponse>;
+  updateInfo(request: UpdateInfoRequest): Observable<UpdateInfoResponse>;
+
+  updateCompanyInfo(request: UpdateCompanyInfoRequest): Observable<UpdateCompanyInfoResponse>;
 
   checkUser(request: CheckUserRequest): Observable<CheckUserResponse>;
 }
@@ -230,21 +231,21 @@ export interface UserServiceController {
     request: DeleteImageRequest,
   ): Promise<DeleteImageResponse> | Observable<DeleteImageResponse> | DeleteImageResponse;
 
-  changePassword(
-    request: ChangePasswordRequest,
-  ): Promise<ChangePasswordResponse> | Observable<ChangePasswordResponse> | ChangePasswordResponse;
-
   confirmAccount(
     request: ConfirmAccountRequest,
   ): Promise<ConfirmAccountResponse> | Observable<ConfirmAccountResponse> | ConfirmAccountResponse;
 
-  changeInfo(
-    request: ChangeInfoRequest,
-  ): Promise<ChangeInfoResponse> | Observable<ChangeInfoResponse> | ChangeInfoResponse;
+  updatePassword(
+    request: UpdatePasswordRequest,
+  ): Promise<UpdatePasswordResponse> | Observable<UpdatePasswordResponse> | UpdatePasswordResponse;
 
-  changeCompanyInfo(
-    request: ChangeCompanyInfoRequest,
-  ): Promise<ChangeCompanyInfoResponse> | Observable<ChangeCompanyInfoResponse> | ChangeCompanyInfoResponse;
+  updateInfo(
+    request: UpdateInfoRequest,
+  ): Promise<UpdateInfoResponse> | Observable<UpdateInfoResponse> | UpdateInfoResponse;
+
+  updateCompanyInfo(
+    request: UpdateCompanyInfoRequest,
+  ): Promise<UpdateCompanyInfoResponse> | Observable<UpdateCompanyInfoResponse> | UpdateCompanyInfoResponse;
 
   checkUser(request: CheckUserRequest): Promise<CheckUserResponse> | Observable<CheckUserResponse> | CheckUserResponse;
 }
@@ -260,10 +261,10 @@ export function UserServiceControllerMethods() {
       "getHashedPassword",
       "uploadImageToUser",
       "deleteImageFromUser",
-      "changePassword",
       "confirmAccount",
-      "changeInfo",
-      "changeCompanyInfo",
+      "updatePassword",
+      "updateInfo",
+      "updateCompanyInfo",
       "checkUser",
     ];
     for (const method of grpcMethods) {

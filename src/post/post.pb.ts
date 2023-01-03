@@ -4,6 +4,38 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "post";
 
+export interface UpdatePostRequest {
+  name: string;
+  price: string;
+  floorHeight: string;
+  isParking: boolean;
+  isBalcony: boolean;
+  isRenovation: boolean;
+  dimensions: string;
+  kitchenDimensions: string;
+  livingDimensions: string;
+  description: string;
+  uuid: string;
+  userUuid: string;
+}
+
+export interface UpdatePostResponse {
+  status: number;
+  error: string;
+}
+
+export interface UpdateImagesRequest {
+  uuid: string;
+  userUuid: string;
+  createImages: ImageCreate[];
+  deleteImages: string[];
+}
+
+export interface UpdateImagesResponse {
+  status: number;
+  error: string;
+}
+
 export interface ImageCreate {
   fieldName: string;
   originalName: string;
@@ -70,6 +102,8 @@ export interface Post {
   type: string;
   info: PostInfo | undefined;
   images: Image[];
+  locked: boolean;
+  lockedByAdmin: boolean;
 }
 
 export interface PostInfo {
@@ -103,6 +137,10 @@ export interface PostServiceClient {
   findOne(request: FindOnePostRequest): Observable<FindOnePostResponse>;
 
   findAll(request: FindAllPostRequest): Observable<FindAllPostResponse>;
+
+  updateImages(request: UpdateImagesRequest): Observable<UpdateImagesResponse>;
+
+  updatePost(request: UpdatePostRequest): Observable<UpdatePostResponse>;
 }
 
 export interface PostServiceController {
@@ -115,11 +153,19 @@ export interface PostServiceController {
   findAll(
     request: FindAllPostRequest,
   ): Promise<FindAllPostResponse> | Observable<FindAllPostResponse> | FindAllPostResponse;
+
+  updateImages(
+    request: UpdateImagesRequest,
+  ): Promise<UpdateImagesResponse> | Observable<UpdateImagesResponse> | UpdateImagesResponse;
+
+  updatePost(
+    request: UpdatePostRequest,
+  ): Promise<UpdatePostResponse> | Observable<UpdatePostResponse> | UpdatePostResponse;
 }
 
 export function PostServiceControllerMethods() {
   return function (constructor: Function) {
-    const grpcMethods: string[] = ["create", "findOne", "findAll"];
+    const grpcMethods: string[] = ["create", "findOne", "findAll", "updateImages", "updatePost"];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);
       GrpcMethod("PostService", method)(constructor.prototype[method], method, descriptor);

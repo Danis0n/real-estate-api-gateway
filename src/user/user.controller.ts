@@ -12,10 +12,6 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import {
-  ChangeCompanyInfoRequest,
-  ChangeCompanyInfoResponse,
-  ChangeInfoRequest,
-  ChangeInfoResponse,
   CreateRoleRequest,
   CreateRoleResponse,
   CreateUserRequest,
@@ -23,6 +19,10 @@ import {
   DeleteImageResponse,
   FindAllUsersResponse,
   FindOneUserResponse,
+  UpdateCompanyInfoRequest,
+  UpdateCompanyInfoResponse,
+  UpdateInfoRequest,
+  UpdateInfoResponse,
   UploadImageResponse,
   USER_SERVICE_NAME,
   UserServiceClient,
@@ -101,18 +101,18 @@ export class UserController implements OnModuleInit {
   }
 
   @UseGuards(AuthGuard)
-  @Post('change/info')
+  @Post('update/info')
   private async changeInfo(
-    @Body() dto: ChangeInfoRequest,
-  ): Promise<Observable<ChangeInfoResponse>> {
-    return this.userServiceClient.changeInfo(dto);
+    @Body() dto: UpdateInfoRequest,
+  ): Promise<Observable<UpdateInfoResponse>> {
+    return this.userServiceClient.updateInfo(dto);
   }
 
   @UseGuards(AuthGuard)
-  @Post('change/company-info/')
+  @Post('update/company-info/')
   private async changeCompanyInfo(
-    @Body() dto: ChangeCompanyInfoRequest,
-  ): Promise<Observable<ChangeCompanyInfoResponse>> {
-    return this.userServiceClient.changeCompanyInfo(dto);
+    @Body() dto: UpdateCompanyInfoRequest,
+  ): Promise<Observable<UpdateCompanyInfoResponse>> {
+    return this.userServiceClient.updateCompanyInfo(dto);
   }
 }

@@ -110,6 +110,7 @@ export interface RegisterRequest {
   dateOfBirth: string;
   inn: string;
   link: string;
+  role: string;
 }
 
 export interface RegisterResponse {
