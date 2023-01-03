@@ -6,6 +6,7 @@ export const protobufPackage = "post";
 
 export interface LockPostAdminStateRequest {
   postUUID: string;
+  state: boolean;
 }
 
 export interface LockPostAdminStateResponse {
@@ -16,6 +17,7 @@ export interface LockPostAdminStateResponse {
 export interface LockPostStateRequest {
   postUUID: string;
   userUUID: string;
+  state: boolean;
 }
 
 export interface LockPostStateResponse {
@@ -161,13 +163,9 @@ export interface PostServiceClient {
 
   updatePost(request: UpdatePostRequest): Observable<UpdatePostResponse>;
 
-  lockPostRequest(request: LockPostStateRequest): Observable<LockPostStateResponse>;
+  updateLockPost(request: LockPostStateRequest): Observable<LockPostStateResponse>;
 
-  unLockPostRequest(request: LockPostStateRequest): Observable<LockPostStateResponse>;
-
-  lockPostAdminRequest(request: LockPostAdminStateRequest): Observable<LockPostAdminStateResponse>;
-
-  unLockPostAdminRequest(request: LockPostAdminStateRequest): Observable<LockPostAdminStateResponse>;
+  updateLockPostAdmin(request: LockPostAdminStateRequest): Observable<LockPostAdminStateResponse>;
 }
 
 export interface PostServiceController {
@@ -189,19 +187,11 @@ export interface PostServiceController {
     request: UpdatePostRequest,
   ): Promise<UpdatePostResponse> | Observable<UpdatePostResponse> | UpdatePostResponse;
 
-  lockPostRequest(
+  updateLockPost(
     request: LockPostStateRequest,
   ): Promise<LockPostStateResponse> | Observable<LockPostStateResponse> | LockPostStateResponse;
 
-  unLockPostRequest(
-    request: LockPostStateRequest,
-  ): Promise<LockPostStateResponse> | Observable<LockPostStateResponse> | LockPostStateResponse;
-
-  lockPostAdminRequest(
-    request: LockPostAdminStateRequest,
-  ): Promise<LockPostAdminStateResponse> | Observable<LockPostAdminStateResponse> | LockPostAdminStateResponse;
-
-  unLockPostAdminRequest(
+  updateLockPostAdmin(
     request: LockPostAdminStateRequest,
   ): Promise<LockPostAdminStateResponse> | Observable<LockPostAdminStateResponse> | LockPostAdminStateResponse;
 }
@@ -214,10 +204,8 @@ export function PostServiceControllerMethods() {
       "findAll",
       "updateImages",
       "updatePost",
-      "lockPostRequest",
-      "unLockPostRequest",
-      "lockPostAdminRequest",
-      "unLockPostAdminRequest",
+      "updateLockPost",
+      "updateLockPostAdmin",
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);

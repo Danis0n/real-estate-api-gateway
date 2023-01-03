@@ -15,6 +15,8 @@ import {
   CreatePostResponse,
   FindAllPostResponse,
   FindOnePostResponse,
+  LockPostAdminStateRequest,
+  LockPostStateRequest,
   POST_SERVICE_NAME,
   PostServiceClient,
   UpdateImagesRequest,
@@ -27,6 +29,9 @@ import { Observable } from 'rxjs';
 import { AuthGuard } from '../utils/guard/auth.guard';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { ImageMapper } from '../utils/mappers/image.mapper';
+import { Roles } from '../utils/decorators/role.decorator';
+import { RoleGuard } from '../utils/guard/roles.guard';
+import { LockStateResponse } from '../user/user.pb';
 
 @Controller('post')
 export class PostController implements OnModuleInit {
@@ -83,5 +88,20 @@ export class PostController implements OnModuleInit {
     return this.postServiceClient.updateImages(dto);
   }
 
-  // @Post('state/lock')
+  @UseGuards(AuthGuard)
+  @Post('state/lock')
+  private async updateLockOne(
+    @Body() dto: LockPostStateRequest,
+  ): Promise<Observable<LockStateResponse>> {
+    return this.postServiceClient.updateLockPost(dto);
+  }
+
+  @Roles('admin')
+  @UseGuards(RoleGuard)
+  @Post('state/lock/admin')
+  private async updateLockOneAdmin(
+    @Body() dto: LockPostAdminStateRequest,
+  ): Promise<Observable<LockStateResponse>> {
+    return this.postServiceClient.updateLockPostAdmin(dto);
+  }
 }

@@ -6,6 +6,7 @@ export const protobufPackage = "user";
 
 export interface LockStateRequest {
   UUID: string;
+  state: boolean;
 }
 
 export interface LockStateResponse {
@@ -208,9 +209,7 @@ export interface UserServiceClient {
 
   checkUser(request: CheckUserRequest): Observable<CheckUserResponse>;
 
-  lockUser(request: LockStateRequest): Observable<LockStateResponse>;
-
-  unLockUser(request: LockStateRequest): Observable<LockStateResponse>;
+  updateUserLock(request: LockStateRequest): Observable<LockStateResponse>;
 }
 
 export interface UserServiceController {
@@ -262,9 +261,9 @@ export interface UserServiceController {
 
   checkUser(request: CheckUserRequest): Promise<CheckUserResponse> | Observable<CheckUserResponse> | CheckUserResponse;
 
-  lockUser(request: LockStateRequest): Promise<LockStateResponse> | Observable<LockStateResponse> | LockStateResponse;
-
-  unLockUser(request: LockStateRequest): Promise<LockStateResponse> | Observable<LockStateResponse> | LockStateResponse;
+  updateUserLock(
+    request: LockStateRequest,
+  ): Promise<LockStateResponse> | Observable<LockStateResponse> | LockStateResponse;
 }
 
 export function UserServiceControllerMethods() {
@@ -283,8 +282,7 @@ export function UserServiceControllerMethods() {
       "updateInfo",
       "updateCompanyInfo",
       "checkUser",
-      "lockUser",
-      "unLockUser",
+      "updateUserLock",
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);

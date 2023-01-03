@@ -34,8 +34,8 @@ import { Observable } from 'rxjs';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '../utils/guard/auth.guard';
 import { Request } from 'express';
-import { RoleGuard } from "../utils/guard/roles.guard";
-import { Roles } from "../utils/decorators/role.decorator";
+import { RoleGuard } from '../utils/guard/roles.guard';
+import { Roles } from '../utils/decorators/role.decorator';
 
 @Controller('user')
 export class UserController implements OnModuleInit {
@@ -120,21 +120,12 @@ export class UserController implements OnModuleInit {
     return this.userServiceClient.updateCompanyInfo(dto);
   }
 
-  @Roles('Admin')
+  @Roles('admin')
   @UseGuards(RoleGuard)
   @Post('state/lock')
-  private async lockOne(
+  private async updateLockOne(
     @Body() dto: LockStateRequest,
   ): Promise<Observable<LockStateResponse>> {
-    return this.userServiceClient.lockUser(dto);
-  }
-
-  @Roles('Admin')
-  @UseGuards(RoleGuard)
-  @Post('state/unlock')
-  private async unLockOne(
-    @Body() dto: LockStateRequest,
-  ): Promise<Observable<LockStateResponse>> {
-    return this.userServiceClient.unLockUser(dto);
+    return this.userServiceClient.updateUserLock(dto);
   }
 }
