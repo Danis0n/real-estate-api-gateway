@@ -4,6 +4,15 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "user";
 
+export interface LockStateRequest {
+  UUID: string;
+}
+
+export interface LockStateResponse {
+  status: number;
+  error: string;
+}
+
 export interface CheckUserRequest {
   login: string;
   phone: string;
@@ -19,7 +28,7 @@ export interface UpdateCompanyInfoRequest {
   description: string;
   link: string;
   address: string;
-  uuid: string;
+  UUID: string;
 }
 
 export interface UpdateCompanyInfoResponse {
@@ -32,7 +41,7 @@ export interface UpdateInfoRequest {
   lastName: string;
   phone: string;
   email: string;
-  uuid: string;
+  UUID: string;
 }
 
 export interface UpdateInfoResponse {
@@ -41,7 +50,7 @@ export interface UpdateInfoResponse {
 }
 
 export interface ConfirmAccountRequest {
-  uuid: string;
+  UUID: string;
 }
 
 export interface ConfirmAccountResponse {
@@ -51,7 +60,7 @@ export interface ConfirmAccountResponse {
 
 export interface UpdatePasswordRequest {
   password: string;
-  uuid: string;
+  UUID: string;
 }
 
 export interface UpdatePasswordResponse {
@@ -60,7 +69,7 @@ export interface UpdatePasswordResponse {
 }
 
 export interface DeleteImageRequest {
-  uuid: string;
+  UUID: string;
 }
 
 export interface DeleteImageResponse {
@@ -74,13 +83,13 @@ export interface UploadImageRequest {
   originalName: string;
   mimetype: string;
   size: number;
-  uuid: string;
+  UUID: string;
 }
 
 export interface UploadImageResponse {
   status: number;
   error: string;
-  uuid: string;
+  UUID: string;
 }
 
 export interface GetHashedPasswordResponse {
@@ -198,6 +207,10 @@ export interface UserServiceClient {
   updateCompanyInfo(request: UpdateCompanyInfoRequest): Observable<UpdateCompanyInfoResponse>;
 
   checkUser(request: CheckUserRequest): Observable<CheckUserResponse>;
+
+  lockUser(request: LockStateRequest): Observable<LockStateResponse>;
+
+  unLockUser(request: LockStateRequest): Observable<LockStateResponse>;
 }
 
 export interface UserServiceController {
@@ -248,6 +261,10 @@ export interface UserServiceController {
   ): Promise<UpdateCompanyInfoResponse> | Observable<UpdateCompanyInfoResponse> | UpdateCompanyInfoResponse;
 
   checkUser(request: CheckUserRequest): Promise<CheckUserResponse> | Observable<CheckUserResponse> | CheckUserResponse;
+
+  lockUser(request: LockStateRequest): Promise<LockStateResponse> | Observable<LockStateResponse> | LockStateResponse;
+
+  unLockUser(request: LockStateRequest): Promise<LockStateResponse> | Observable<LockStateResponse> | LockStateResponse;
 }
 
 export function UserServiceControllerMethods() {
@@ -266,6 +283,8 @@ export function UserServiceControllerMethods() {
       "updateInfo",
       "updateCompanyInfo",
       "checkUser",
+      "lockUser",
+      "unLockUser",
     ];
     for (const method of grpcMethods) {
       const descriptor: any = Reflect.getOwnPropertyDescriptor(constructor.prototype, method);

@@ -19,6 +19,8 @@ import {
   DeleteImageResponse,
   FindAllUsersResponse,
   FindOneUserResponse,
+  LockStateRequest,
+  LockStateResponse,
   UpdateCompanyInfoRequest,
   UpdateCompanyInfoResponse,
   UpdateInfoRequest,
@@ -32,6 +34,8 @@ import { Observable } from 'rxjs';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { AuthGuard } from '../utils/guard/auth.guard';
 import { Request } from 'express';
+import { RoleGuard } from "../utils/guard/roles.guard";
+import { Roles } from "../utils/decorators/role.decorator";
 
 @Controller('user')
 export class UserController implements OnModuleInit {
@@ -88,16 +92,16 @@ export class UserController implements OnModuleInit {
       mimetype: file.mimetype,
       buffer: file.buffer,
       size: file.size,
-      uuid: uuid,
+      UUID: uuid,
     });
   }
 
   @UseGuards(AuthGuard)
   @Post('image/delete/:id')
   private async deleteImage(
-    @Param('id') uuid: string,
+    @Param('id') UUID: string,
   ): Promise<Observable<DeleteImageResponse>> {
-    return this.userServiceClient.deleteImageFromUser({ uuid });
+    return this.userServiceClient.deleteImageFromUser({ UUID });
   }
 
   @UseGuards(AuthGuard)
@@ -114,5 +118,23 @@ export class UserController implements OnModuleInit {
     @Body() dto: UpdateCompanyInfoRequest,
   ): Promise<Observable<UpdateCompanyInfoResponse>> {
     return this.userServiceClient.updateCompanyInfo(dto);
+  }
+
+  @Roles('Admin')
+  @UseGuards(RoleGuard)
+  @Post('state/lock')
+  private async lockOne(
+    @Body() dto: LockStateRequest,
+  ): Promise<Observable<LockStateResponse>> {
+    return this.userServiceClient.lockUser(dto);
+  }
+
+  @Roles('Admin')
+  @UseGuards(RoleGuard)
+  @Post('state/unlock')
+  private async unLockOne(
+    @Body() dto: LockStateRequest,
+  ): Promise<Observable<LockStateResponse>> {
+    return this.userServiceClient.unLockUser(dto);
   }
 }

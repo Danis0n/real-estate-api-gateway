@@ -48,15 +48,15 @@ export class ImageController implements OnModuleInit {
 
   @Get('display/:id')
   private async displayImage(
-    @Param('id') uuid: string,
+    @Param('id') UUID: string,
   ): Promise<Observable<ImageViewResponse>> {
-    return this.imageServiceClient.imageView({ uuid });
+    return this.imageServiceClient.imageView({ UUID });
   }
 
   @Post('delete/:id')
   private async deleteImage(
-    @Param('id') uuid: string,
+    @Param('id') UUID: string,
   ): Promise<Observable<ImageDeleteResponse>> {
-    return this.imageServiceClient.imageDelete({ uuid });
+    return this.imageServiceClient.imageDelete({ UUID });
   }
 }

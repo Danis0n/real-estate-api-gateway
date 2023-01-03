@@ -5,7 +5,7 @@ import { Observable } from "rxjs";
 export const protobufPackage = "image";
 
 export interface ImagesDeleteRequest {
-  uuids: string[];
+  UUIDs: string[];
 }
 
 export interface ImagesDeleteResponse {
@@ -14,7 +14,7 @@ export interface ImagesDeleteResponse {
 }
 
 export interface ImageDeleteRequest {
-  uuid: string;
+  UUID: string;
 }
 
 export interface ImageDeleteResponse {
@@ -33,7 +33,7 @@ export interface ImageUserRequest {
 export interface ImageUserResponse {
   status: number;
   error: string;
-  uuid: string;
+  UUID: string;
 }
 
 export interface ImageCreate {
@@ -46,18 +46,18 @@ export interface ImageCreate {
 
 export interface ImagePostRequest {
   images: ImageCreate[];
-  uuid: string;
+  UUID: string;
 }
 
 export interface ImagePostResponse {
   status: number;
   error: string;
-  uuid: string;
+  UUID: string;
   imagesUuids: string[];
 }
 
 export interface ImageViewRequest {
-  uuid: string;
+  UUID: string;
 }
 
 export interface ImageViewResponse {

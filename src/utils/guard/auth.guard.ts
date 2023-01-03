@@ -30,7 +30,7 @@ export class AuthGuard implements CanActivate {
     const { status, error }: ValidateResponse = await this.authService.validate(
       token,
     );
-    if (status !== HttpStatus.OK) {
+    if (status != HttpStatus.OK) {
       throw new UnauthorizedException({
         message: 'Пользователь не авторизован',
       });

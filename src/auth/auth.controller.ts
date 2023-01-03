@@ -28,7 +28,7 @@ import {
 } from './auth.pb';
 import { ClientGrpc } from '@nestjs/microservices';
 import { Observable } from 'rxjs';
-import { GetCurrentUserAt } from '../utils/decorators/get-current-user-id.decorator';
+import { GetCurrentUserAt } from '../utils/decorators/get-current-user-at.decorator';
 import { AuthGuard } from '../utils/guard/auth.guard';
 import {
   AuthInterceptor,

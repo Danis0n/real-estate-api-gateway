@@ -56,9 +56,9 @@ export class PostController implements OnModuleInit {
 
   @Get('get/:id')
   private async findById(
-    @Param('id') id: string,
+    @Param('id') UUID: string,
   ): Promise<Observable<FindOnePostResponse>> {
-    return this.postServiceClient.findOne({ uuid: id });
+    return this.postServiceClient.findOne({ UUID });
   }
 
   @Get('get-all')
@@ -82,4 +82,6 @@ export class PostController implements OnModuleInit {
     dto.createImages = this.imageMapper.mapToArrayImageCreate(files);
     return this.postServiceClient.updateImages(dto);
   }
+
+  // @Post('state/lock')
 }
